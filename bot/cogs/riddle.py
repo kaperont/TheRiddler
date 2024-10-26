@@ -15,10 +15,17 @@ class Riddle(commands.Cog):
     @discord.slash_command(name='riddle', description = 'Track the specified user\'s stats.')
     async def riddle(self, ctx):
         data: dict = RiddleService.get_riddle()
-        msg = f'**Riddle:** {data.get("riddle", "No Riddle Found!")}\r\n**Answer:** ||{data.get("answer", "No Answer Found!")}||'
+        logger.debug(data)
+        
+        embed = discord.Embed(
+            title='The Riddle',
+            description=data.get('riddle', 'No Riddle Found!'),
+            color=discord.Colour.yellow()
+        )
+        embed.add_field(name='Answer', value=f'||{data.get("answer", "No Answer Found!")}||')
+        embed.set_footer(text='Riddles provided by Riddles API (https://riddles-api.vercel.app/)')
 
-        logger.debug(msg)
-        await ctx.respond(msg)
+        await ctx.respond(embed=embed)
 
 
 def setup(bot: commands.Bot):
