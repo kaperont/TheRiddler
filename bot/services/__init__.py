@@ -1,0 +1,1 @@
+from .riddles import RiddleService
